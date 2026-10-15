@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Science Quiz</title>
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#question-box {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+#options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.option {
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.option:hover {
+  background-color: #d0d0d0;
+}
+
+.option.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+#next-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+#submit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+#submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Science Quiz</h1>
+    <div id="quiz-container">
+      <div id="question-box"></div>
+      <div id="options-container"></div>
+      <button id="next-btn">Next</button>
+      <button id="submit-btn">Submit</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    // Quiz Data
+const quizData = [
+  {
+    question: "What is the chemical symbol for water?",
+    options: ["H2O", "CO2", "NaCl", "O2"],
+    answer: "H2O",
+  },
+  {
+    question: "Which planet is known as the Red Planet?",
+    options: ["Earth", "Mars", "Jupiter", "Venus"],
+    answer: "Mars",
+  },
+  {
+    question: "What is the process by which plants make their own food?",
+    options: ["Respiration", "Photosynthesis", "Transpiration", "Fermentation"],
+    answer: "Photosynthesis",
+  },
+  {
+    question: "What is the smallest unit of matter?",
+    options: ["Atom", "Cell", "Molecule", "Electron"],
+    answer: "Atom",
+  },
+  {
+    question: "Who discovered gravity?",
+    options: ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "Niels Bohr"],
+    answer: "Isaac Newton",
+  },
+  {
+    question: "The Science of the nature of heavenly bodies is know as ?",
+    options: ["Cosmology", "Conchology", "Cryobiology", "Cosmogony"],
+    answer: "Cosmology",
+  },
+  {
+    question: "which part of the eye regulates and Control the amount of light entering the human eye ?",
+    options: ["Retina", "Cornea", "Iris", "None of the above"],
+    answer: "Iris",
+  },
+  {
+    question: "Which of the following hormones egulates the ionic balance in the body ?",
+    options: ["Glucogon", "vasopressin", "Testosterone", "None of the above"],
+    answer: "Vasopressin",
+  },
+  {
+    question: "Ribosomes are sites for ?",
+    options: ["Respiration", "Fat Synthesis", "Photosynthesis", "Protein Synthesis"],
+    answer: "Protein synthesis",
+  },
+  {
+    question: "What type of wave are light wave ?",
+    options: ["Transverse Wave", "Longitudinal wave", "Both", "None of the above"],
+    answer: "Transverse wave",
+  },
+  {
+    question: "Which Juice secreted by the organs in the alimentary canal plays an important role in the digestion of fats ?",
+    options: ["Pancreatic Juice,saliva", "Hydrochloric acid,,mucus", "Bile juice,Pancreatic Juice", "Saliva,hydrochloric acid"],
+    answer: "Bila juice,pancreatic juice",
+  },
+    {
+    question: "A passenger in a moving bus is thrown forward when the bus suddenly stops ?",
+    options: ["by Newton's first law", "by Newton's second law", "by Newton's law", "by the principle of conservation of momemtum"],
+    answer: "by Newton's first law",
+  },
+      {
+    question: "which of the following aquatic animals does NOT Have gills ?",
+    options: ["Octopus", "Squid", "Clown Fish", "Whale"],
+    answer: "Whale",
+  },
+  {
+    question: "Non-Metals are generally bad conductors of electricity.However,graphite is a good conductor of electricity because it",
+    options: ["has free electrons", "is an allotrope of carbon", "is brittle", "forms basic oxide"],
+    answer: "has free electrond",
+  },
+  {
+    question: "Which of the following has the shortest wavelength ?",
+    options: ["Visible rays", "Gamma rays", "Infrared-rays", "X-rays"],
+    answer: "Gamma rays",
+  },
+  {
+    question: "Which of the following organelles shows similarity to a prokaryotic cell ?",
+    options: ["Mitochondria only", "Chloroplast only", "Both Chloroplast & Mitchondria", "None of the above"],
+    answer: "Both Chloroplast & Mitchondria",
+  },
+  {
+    question: "In which of the following will a piece of iron weigh most ?",
+    options: ["In air", "In an atmosphere of oxygen", "In an atmosphere of CO3", "In vacuum"],
+    answer: "In Vacuum",
+  },
+  {
+    question: "A man Jumping out of a moving train is thrown ?",
+    options: ["Forward", "Backward", "Sideways", "None of the above"],
+    answer: "Forward",
+  },
+  {
+    question: "The principle on which a jet engine works is ?",
+    options: ["Conservation of mass", "Newtonian law of action & reaction", "Conservation of angular momentum", "NOne of the above"],
+    answer: "Newtonian law of action & reaction",
+  },
+  {
+    question: "Which physical quantity is measured in watts ?",
+    options: ["Power", "Kinetic energy", "Momentum", "Impulse"],
+    answer: "Power",
+  },
+  {
+    question: "The theory that the earth constituted the centre of the universe around which the sun and the planets revolved was propounded by ?",
+    options: ["Kepler", "Copernicus", "Newton", "Ptolemy"],
+    answer: "Ptolemy",
+  },
+    {
+    question: "When the velocity of a body is halved ?",
+    options: ["Its momentum is halved", "Its kinetic energy is halved", "Its accleration is halved", "Its potential energy is halved"],
+    answer: "Its momentum is halved",
+  },
+    {
+    question: "The inability of a body to change its state of rest or uniform motion along a straighy line is called its ?",
+    options: ["Velocity", "Momentum", "Inertia", "Acceleration"],
+    answer: "Inertia",
+  },
+  {
+    question: "When a bullet is fired from a gun ?",
+    options: ["The gun moves forward", "The gun jumps up", "The gun does not", "The gun recoils with the same momentum as the bullet"],
+    answer: "The gun recoils with the same momentum as the bullet",
+  },
+  {
+    question: "Choose the scalar quantity from the following physical quantities ?",
+    options: ["Acceleration", "Speed", "Force", "Velocity"],
+    answer: "Speed",
+  },
+  {
+    question: "If you want to open a door with less difficulty you push it ?",
+    options: ["At a point away from the hinge", "At the middle", "Near the hinge", "None of above"],
+    answer: "At a point away from the hinge",
+  },
+  {
+    question: "When a swing is drawn to a side Its potentisl energy in relation to the earth ?",
+    options: ["Is constant", "Decreases", "Increases", "Remains the same"],
+    answer: "Increases",
+  },
+  {
+    question: "The unit of power in SI is ?",
+    options: ["Newton", "Joule", "Erg/sec", "Joule/sec"],
+    answer: "Joule/sec",
+  },
+  {
+    question: "Where does the centre of gravity of a rubber ring lie ?",
+    options: ["On the outer surface", "In the inner surface", "At the centre of the ring", "None of the above"],
+    answer: "At the centre of the ring",
+  },
+  {
+    question: "Who was the first scientist to use an instrument for biological studies in 1665 ?",
+    options: ["None of above", "Schleiden", "Schwann", "Robert hooke"],
+    answer: "Robert hoole",
+  },
+  {
+    question: "The two german scientists 'who proposed the cell theory' were ?",
+    options: ["virchow & purkinje", "Porter & palade", "Theodore schwann & matthias schleiden", "Mendal & darwin"],
+    answer: "Theodore schwann & Matthias schleiden",
+  },
+  {
+    question: "Which one of the following cells help in storing water & food materials ?",
+    options: ["Nematoblast", "Flame cell", "Parenchyma cells", "None of above"],
+    answer: "Parenchyma cell",
+  },
+  {
+    question: "Nucleus was first discovered by ?",
+    options: ["Porter", "Palade", "Robert brown", "None of above"],
+    answer: "Robert brown",
+  },
+  {
+    question: "Which of the following organelles is know as the 'powwer House' of the cell ?",
+    options: ["10Micron", "One Micron", "1000Micron", "100Micron"],
+    answer: "100Micron",
+  },
+  {
+    question: "The primary energy for living organisms is ?",
+    options: ["Solar energy", "ATP", "Mitochondria", "Chemical energy"],
+    answer: "Solar energy",
+  },
+  {
+    question: "The plant cells are surrounded rigidly by ?",
+    options: ["Centrosome", "Tonoplast", "Chloropalst", "Nematoblast"],
+    answer: "Chloroplast",
+  },
+  {
+    question: "Total number of amino acids in plants is  ?",
+    options: ["10", "20", "30", "Plenty"],
+    answer: "20",
+  },
+  {
+    question: "The protein synthesis take place in ?",
+    options: ["Chromosomes", "Ribosomes", "DNA", "None of these"],
+    answer: "Ribosomes",
+  },
+  {
+    question: "Heart is made up of ?",
+    options: ["Cardiac Muscle", "Nonstriated muscle", "Connective tissue", "Nervous tissue"],
+    answer: "Cardiac Muscle",
+  },
+  {
+    question: "Dr.Khorana's work relates to ?",
+    options: ["Reduction of mutation", "Synthesis of RNA from bacterial cell", "Synthesis of simple DNA", "Genetic code"],
+    answer: "Genetic code",
+  },
+  {
+    question: "The protoplasm of a child is exactly the same as that of its ?",
+    options: ["Identical twin", "Mother", "Grandfather", "Father"],
+    answer: "Identical twin",
+  },
+  {
+    question: "DNA is found ?",
+    options: ["Only in cytoplasma", "Only in nucleus", "In both cytoplasma & nucleus", "In hybrid from only"],
+    answer: "In both cytoplasma & nucleus",
+  },
+  {
+    question: "The fuction of ribosomes is ?",
+    options: ["Secretion", "Excretion", "Power house of the cell", "Protein synthesis"],
+    answer: "Protein synthesis", 
+  },
+  {
+    question: "Viruses have ?",
+    options: ["Either DNA or RNA", "Both DNA or RNA", "RNA only", "DNA only"],
+    answer: "Either DNA or RNA",
+  },
+  {
+    question: "Prions are composed largely of ?",
+    options: ["DNA", "Proteins", "RNA", "None of these"],
+    answer: "Proteins",
+  },
+  {
+    question: "HIV causes ?",
+    options: ["Hepatitis", "Cancer", "Herpes", "AIDS"],
+    answer: "AIDS",
+  },
+  {
+    question: "BCG vaccination(Bacillus Calmette Gierine) is injected to get immunity from  ?",
+    options: ["Tuberculosis", "Small fox", "Cholera", "Polio"],
+    answer: "Tuberculosis",
+  },
+  {
+    question: "Which of the following test help in diagnosis of cancer ?",
+    options: ["X-ray", "Biopsy test", "Urine test", "Blood test"],
+    answer: "Biopsy test",
+  },
+  {
+    question: "The richest source of vitamin D is ?",
+    options: ["Milk", "Cheese", "Cod liver oil", "Spinach"],
+    answer: "Cod liver oil",
+  },
+  {
+    question: "Which of the following vegetables proteins is considered as good sa an animal protein ?",
+    options: ["Soya bean", "Corn", "Wheat", "Bengal gram"],
+    answer: "Soya bean",
+  },
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let selectedAnswer = null;
+
+// DOM Elements
+const questionBox = document.getElementById("question-box");
+const optionsContainer = document.getElementById("options-container");
+const nextBtn = document.getElementById("next-btn");
+const submitBtn = document.getElementById("submit-btn");
+const resultDiv = document.getElementById("result");
+
+// Load Question
+function loadQuestion() {
+  const currentQuestion = quizData[currentQuestionIndex];
+  questionBox.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+  optionsContainer.innerHTML = "";
+
+  currentQuestion.options.forEach((option) => {
+    const optionElement = document.createElement("div");
+    optionElement.classList.add("option");
+    optionElement.textContent = option;
+
+    optionElement.addEventListener("click", () => {
+      if (!selectedAnswer) {
+        selectedAnswer = option;
+        optionElement.classList.add("selected");
+        disableOptions();
+      }
+    });
+
+    optionsContainer.appendChild(optionElement);
+  });
+
+  nextBtn.style.display = "inline-block";
+  submitBtn.style.display = currentQuestionIndex === quizData.length - 1 ? "inline-block" : "none";
+}
+
+// Disable Options After Selection
+function disableOptions() {
+  const options = document.querySelectorAll(".option");
+  options.forEach((option) => {
+    option.style.pointerEvents = "none";
+  });
+}
+
+// Enable Options for Next Question
+function enableOptions() {
+  const options = document.querySelectorAll(".option");
+  options.forEach((option) => {
+    option.style.pointerEvents = "auto";
+    option.classList.remove("selected");
+  });
+}
+
+// Handle Next Button Click
+nextBtn.addEventListener("click", () => {
+  if (selectedAnswer) {
+    if (selectedAnswer === quizData[currentQuestionIndex].answer) {
+      score++;
+    }
+
+    currentQuestionIndex++;
+    selectedAnswer = null;
+    enableOptions();
+
+    if (currentQuestionIndex < quizData.length) {
+      loadQuestion();
+    } else {
+      showResult();
+    }
+  }
+});
+
+// Handle Submit Button Click
+submitBtn.addEventListener("click", () => {
+  if (selectedAnswer === quizData[currentQuestionIndex].answer) {
+    score++;
+  }
+  showResult();
+});
+
+// Show Final Result
+function showResult() {
+  questionBox.textContent = "Quiz Completed!";
+  optionsContainer.innerHTML = "";
+  nextBtn.style.display = "none";
+  submitBtn.style.display = "none";
+  resultDiv.textContent = `You scored ${score} out of ${quizData.length}`;
+}
+
+// Initialize Quiz
+loadQuestion();
+  </script>
+</body>
+</html>

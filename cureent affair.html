@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Current Affairs Quiz 2021-2024</title>
+ <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+#quiz {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#start-btn, #restart-btn {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#result-container {
+  margin-top: 20px;
+}
+
+#score {
+  font-weight: bold;
+  color: #007bff;
+}
+ </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Current Affairs Quiz (2021-2024)</h1>
+    <div id="quiz">
+      <div id="question-container" class="hidden">
+        <p id="question"></p>
+        <div id="answer-buttons" class="btn-grid"></div>
+      </div>
+      <div id="result-container" class="hidden">
+        <p>Your Score: <span id="score">0</span></p>
+        <button id="restart-btn">Restart Quiz</button>
+      </div>
+      <button id="start-btn">Start Quiz</button>
+    </div>
+  </div>
+  <script>
+    const startButton = document.getElementById('start-btn');
+const questionContainer = document.getElementById('question-container');
+const answerButtons = document.getElementById('answer-buttons');
+const resultContainer = document.getElementById('result-container');
+const scoreElement = document.getElementById('score');
+const restartButton = document.getElementById('restart-btn');
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+// Quiz questions and answers
+const quizData = [
+  {
+    question: "Which country hosted the 2022 FIFA World Cup?",
+    options: ["Brazil", "Qatar", "Russia", "France"],
+    answer: "Qatar"
+  },
+  {
+    question: "Who became the Prime Minister of the United Kingdom in 2022?",
+    options: ["Boris Johnson", "Liz Truss", "Rishi Sunak", "Theresa May"],
+    answer: "Rishi Sunak"
+  },
+  {
+    question: "In which year did NASA launch the James Webb Space Telescope?",
+    options: ["2020", "2021", "2022", "2023"],
+    answer: "2021"
+  },
+  {
+    question: "What was the name of the first image released by the James Webb Space Telescope?",
+    options: ["Pillars of Creation", "Deep Field", "Eagle Nebula", "Orion Nebula"],
+    answer: "Deep Field"
+  },
+  {
+    question: "Which technology company announced its first quantum computer in 2023?",
+    options: ["Google", "IBM", "Microsoft", "Intel"],
+    answer: "IBM"
+  }
+];
+
+// Start the quiz
+startButton.addEventListener('click', startQuiz);
+
+function startQuiz() {
+  startButton.classList.add('hidden');
+  questionContainer.classList.remove('hidden');
+  currentQuestionIndex = 0;
+  score = 0;
+  setNextQuestion();
+}
+
+function setNextQuestion() {
+  resetState();
+  showQuestion(quizData[currentQuestionIndex]);
+}
+
+function showQuestion(questionData) {
+  document.getElementById('question').innerText = questionData.question;
+  questionData.options.forEach(option => {
+    const button = document.createElement('button');
+    button.innerText = option;
+    button.classList.add('btn');
+    if (option === questionData.answer) {
+      button.dataset.correct = true;
+    }
+    button.addEventListener('click', selectAnswer);
+    answerButtons.appendChild(button);
+  });
+}
+
+function resetState() {
+  while (answerButtons.firstChild) {
+    answerButtons.removeChild(answerButtons.firstChild);
+  }
+}
+
+function selectAnswer(e) {
+  const selectedButton = e.target;
+  const correct = selectedButton.dataset.correct;
+  if (correct) {
+    score++;
+  }
+  Array.from(answerButtons.children).forEach(button => {
+    setStatusClass(button, button.dataset.correct);
+  });
+  if (quizData.length > currentQuestionIndex + 1) {
+    setTimeout(() => {
+      currentQuestionIndex++;
+      setNextQuestion();
+    }, 1000);
+  } else {
+    setTimeout(showResults, 1000);
+  }
+}
+
+function setStatusClass(element, correct) {
+  clearStatusClass(element);
+  if (correct) {
+    element.classList.add('correct');
+  } else {
+    element.classList.add('wrong');
+  }
+}
+
+function clearStatusClass(element) {
+  element.classList.remove('correct');
+  element.classList.remove('wrong');
+}
+
+function showResults() {
+  questionContainer.classList.add('hidden');
+  resultContainer.classList.remove('hidden');
+  scoreElement.innerText = score;
+}
+
+restartButton.addEventListener('click', () => {
+  resultContainer.classList.add('hidden');
+  startQuiz();
+});
+  </script>
+</body>
+</html>

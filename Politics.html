@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politics Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+        }
+        main {
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .question {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question h3 {
+            margin-top: 0;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            width: 100%;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Politics Quiz</h1>
+    </header>
+    <main>
+        <div id="quiz">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+        <button id="submit">Submit Quiz</button>
+        <div class="result" id="result"></div>
+    </main>
+    <footer>
+        &copy; 2023 Politics Quiz Website
+    </footer>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Rome"],
+                answer: "Paris"
+            },
+            {
+                question: "Who was the first President of the United States?",
+                options: ["Thomas Jefferson", "George Washington", "Abraham Lincoln", "John Adams"],
+                answer: "George Washington"
+            },
+            {
+                question: "Which political ideology emphasizes the role of the state in economic planning?",
+                options: ["Capitalism", "Socialism", "Libertarianism", "Conservatism"],
+                answer: "Socialism"
+            },
+            {
+                question: "Which treaty established the European Union?",
+                options: ["Treaty of Versailles", "Treaty of Rome", "Maastricht Treaty", "Treaty of Lisbon"],
+                answer: "Maastricht Treaty"
+            }
+        ];
+
+        const quizContainer = document.getElementById("quiz");
+        const submitButton = document.getElementById("submit");
+        const resultContainer = document.getElementById("result");
+
+        function buildQuiz() {
+            quizData.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `
+                    <h3>${index + 1}. ${q.question}</h3>
+                    <div class="options">
+                        ${q.options.map(option => `
+                            <label>
+                                <input type="radio" name="q${index}" value="${option}">
+                                ${option}
+                            </label>
+                        `).join("")}
+                    </div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function showResults() {
+            const answerContainers = quizContainer.querySelectorAll(".question");
+            let numCorrect = 0;
+
+            quizData.forEach((q, index) => {
+                const answerContainer = answerContainers[index];
+                const selector = `input[name=q${index}]:checked`;
+                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                if (userAnswer === q.answer) {
+                    numCorrect++;
+                }
+            });
+
+            resultContainer.innerHTML = `You scored ${numCorrect} out of ${quizData.length}!`;
+        }
+
+        buildQuiz();
+
+        submitButton.addEventListener("click", showResults);
+    </script>
+</body>
+</html>

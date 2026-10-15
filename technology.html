@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology Quiz</title>
+<style>
+    /* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.quiz-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#quiz {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.question {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.answers label {
+  display: block;
+  margin: 5px 0;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#results {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Technology Quiz</h1>
+    <div id="quiz"></div>
+    <button id="submit">Submit Quiz</button>
+    <div id="results"></div>
+  </div>
+
+  <script>
+// Quiz Questions
+const quizQuestions = [
+  {
+    question: "1.What does CPU stand for?",
+    answers: {
+      a: "Central Processing Unit",
+      b: "Computer Personal Unit",
+      c: "Central Power Unit",
+      d: "Control Processing Unit"
+    },
+    correctAnswer: "a"
+  },
+  {
+    question: "2.Which company developed the first commercially available microprocessor?",
+    answers: {
+      a: "Intel",
+      b: "AMD",
+      c: "IBM",
+      d: "Apple"
+    },
+    correctAnswer: "a"
+  },
+  {
+    question: "3.What is the primary purpose of an operating system?",
+    answers: {
+      a: "To run applications",
+      b: "To manage hardware resources",
+      c: "To connect to the internet",
+      d: "To store data"
+    },
+    correctAnswer: "b"
+  },
+  {
+    question: "4.Which programming language is often used for web development?",
+    answers: {
+      a: "Python",
+      b: "Java",
+      c: "JavaScript",
+      d: "C++"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "5.What does RAM stand for?",
+    answers: {
+      a: "Random Access Memory",
+      b: "Read Access Memory",
+      c: "Real-time Access Memory",
+      d: "Remote Access Module"
+    },
+    correctAnswer: "a"
+  }
+];
+
+// Build Quiz
+function buildQuiz() {
+  const output = [];
+  quizQuestions.forEach((currentQuestion, questionNumber) => {
+    const answers = [];
+    for (let letter in currentQuestion.answers) {
+      answers.push(
+        `<label>
+          <input type="radio" name="question${questionNumber}" value="${letter}">
+          ${letter}: ${currentQuestion.answers[letter]}
+        </label>`
+      );
+    }
+    output.push(
+      `<div class="question">${currentQuestion.question}</div>
+       <div class="answers">${answers.join("")}</div>`
+    );
+  });
+  document.getElementById("quiz").innerHTML = output.join("");
+}
+
+// Show Results
+function showResults() {
+  const answerContainers = document.querySelectorAll(".answers");
+  let numCorrect = 0;
+
+  quizQuestions.forEach((currentQuestion, questionNumber) => {
+    const answerContainer = answerContainers[questionNumber];
+    const selector = `input[name=question${questionNumber}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+    if (userAnswer === currentQuestion.correctAnswer) {
+      numCorrect++;
+      answerContainers[questionNumber].style.color = "green";
+    } else {
+      answerContainers[questionNumber].style.color = "red";
+    }
+  });
+
+  document.getElementById("results").innerHTML = 
+    `You scored ${numCorrect} out of ${quizQuestions.length}!`;
+}
+
+// Event Listeners
+document.getElementById("submit").addEventListener("click", showResults);
+
+// Start Quiz
+buildQuiz();
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #28a745;
+        }
+        .restart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .restart-btn:hover {
+            background-color: #bd2130;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>History Quiz</h1>
+        <div id="quiz">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+        </div>
+        <div class="result" id="result" style="display:none;"></div>
+        <button class="restart-btn" id="restart-btn" style="display:none;">Restart Quiz</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "In which year did World War II end?",
+                options: ["1943", "1945", "1939", "1941"],
+                answer: "1945"
+            },
+            {
+                question: "Who was the first President of the United States?",
+                options: ["Thomas Jefferson", "George Washington", "John Adams", "Abraham Lincoln"],
+                answer: "George Washington"
+            },
+            {
+                question: "The fall of the Berlin Wall occurred in which year?",
+                options: ["1987", "1991", "1989", "1993"],
+                answer: "1989"
+            },
+            {
+                question: "Which event is often considered the start of World War I?",
+                options: ["Assassination of Archduke Franz Ferdinand", "Germany invades Belgium", "Sinking of Lusitania", "Russian Revolution"],
+                answer: "Assassination of Archduke Franz Ferdinand"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const resultElement = document.getElementById('result');
+        const restartButton = document.getElementById('restart-btn');
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, currentQuestion.answer);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption, correctAnswer) {
+            if (selectedOption === correctAnswer) {
+                score++;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionElement.style.display = 'none';
+            optionsElement.style.display = 'none';
+            resultElement.style.display = 'block';
+            resultElement.textContent = `You scored ${score} out of ${questions.length}!`;
+            restartButton.style.display = 'block';
+        }
+
+        restartButton.onclick = () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            questionElement.style.display = 'block';
+            optionsElement.style.display = 'block';
+            resultElement.style.display = 'none';
+            restartButton.style.display = 'none';
+            loadQuestion();
+        };
+
+        loadQuestion();
+    </script>
+</body>
+</html>

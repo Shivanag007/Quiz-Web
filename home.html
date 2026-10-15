@@ -1,0 +1,158 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Introduction</title>
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header { 
+    text-align: center;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+.quiz-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.category {
+    text-align: center;
+    margin: 10px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+}
+
+.category img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.category h3 {
+    font-size: 1.5rem;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color:rgb(58, 58, 1);
+    color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 100%;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Ultimate Quiz Challenge!</h1>
+        <p>Choose a quiz category and test your knowledge.</p>
+    </header>
+
+    <div class="quiz-categories">
+        <div class="category" id="general-knowledge">
+            <img src="General Knowledge.png" alt="General Knowledge">
+            <h3>General Knowledge</h3>
+            <button onclick="startQuiz('general-knowledge')"><a href="GK.html">Start Quiz</button></a>
+        </div>
+        <div class="category" id="science">
+            <img src="Science.png" alt="Science">
+            <h3>Science</h3>
+            <button onclick="startQuiz('science')"><a href="science.html">Start Quiz</button></a>
+        </div>
+        <div class="category" id="technology">
+            <img src="Technology.png" alt="Technology">
+            <h3>Technology</h3>
+            <button onclick="startQuiz('technology')"><a href="technology.html">Start Quiz</button></a>
+        </div>
+        <div class="category" id="current-affairs">
+            <img src="Current Affairs.png" alt="Current Affairs">
+            <h3>Current Affairs</h3>
+            <button onclick="startQuiz('current-affairs')"><a href="cureent affair.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="politics">
+            <img src="politics.png" alt="Politics">
+            <h3>Politics</h3>
+            <button onclick="startQuiz('politics')"><a href="Politics.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="economy">
+            <img src="Economy.png" alt="Economy">
+            <h3>Economy</h3>
+            <button onclick="startQuiz('economy')"><a href="cureent affair.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="world">
+            <img src="History.png" alt="History">
+            <h3>History</h3>
+            <button onclick="startQuiz('History')"><a href="History.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="water">
+            <img src="Sports.png" alt="Sports">
+            <h3>Sports</h3>
+            <button onclick="startQuiz('Sports')"><a href="Sports.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="animals">
+            <img src="Animals.png" alt="Animals">
+            <h3>Animals</h3>
+            <button onclick="startQuiz('animals')"><a href="Animals.html">Start Quiz</button> </a>
+        </div>
+        <div class="category" id="Entertainment">
+            <img src="Enter.png" alt="Enter">
+            <h3>Entertainment</h3>
+            <button onclick="startQuiz('Entertainment')"><a href="Entertainment.html">Start Quiz</button> </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Quiz Website. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function startQuiz(category) {
+    alert("Starting the quiz for " + category + " category.");
+}
+    </script>
+</body>
+</html>

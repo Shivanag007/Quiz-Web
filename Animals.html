@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .hide {
+            display: none;
+        }
+        .restart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .restart-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Animal Quiz</h1>
+        <div id="quiz">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+        </div>
+        <div class="result hide" id="result"></div>
+        <button class="restart-btn hide" id="restartBtn">Restart Quiz</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the largest mammal?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+                answer: "Blue Whale"
+            },
+            {
+                question: "Which animal is known as the 'King of the Jungle'?",
+                options: ["Tiger", "Lion", "Leopard", "Cheetah"],
+                answer: "Lion"
+            },
+            {
+                question: "Which bird can fly backwards?",
+                options: ["Eagle", "Sparrow", "Hummingbird", "Owl"],
+                answer: "Hummingbird"
+            },
+            {
+                question: "What is the fastest land animal?",
+                options: ["Cheetah", "Lion", "Horse", "Greyhound"],
+                answer: "Cheetah"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const quizElement = document.getElementById("quiz");
+        const resultElement = document.getElementById("result");
+        const restartBtn = document.getElementById("restartBtn");
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = currentQuestion.question;
+
+            const optionsElement = document.getElementById("options");
+            optionsElement.innerHTML = "";
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => selectAnswer(option, currentQuestion.answer);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function selectAnswer(selectedOption, correctAnswer) {
+            if (selectedOption === correctAnswer) {
+                score++;
+            }
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizElement.classList.add("hide");
+            resultElement.classList.remove("hide");
+            resultElement.textContent = `You scored ${score} out of ${questions.length}!`;
+            restartBtn.classList.remove("hide");
+        }
+
+        restartBtn.addEventListener("click", () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizElement.classList.remove("hide");
+            resultElement.classList.add("hide");
+            restartBtn.classList.add("hide");
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>

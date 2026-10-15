@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entertainment Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .options button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .result.correct {
+      color: green;
+    }
+    .result.wrong {
+      color: red;
+    }
+    .next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .next-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Entertainment Quiz</h1>
+    <div class="question" id="question">Question goes here</div>
+    <div class="options" id="options"></div>
+    <div class="result" id="result"></div>
+    <button class="next-btn" id="next-btn" disabled>Next Question</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Which movie features a young wizard named Harry Potter?",
+        options: ["The Lord of the Rings", "Harry Potter and the Sorcerer's Stone", "The Chronicles of Narnia", "Percy Jackson & the Olympians"],
+        answer: "Harry Potter and the Sorcerer's Stone"
+      },
+      {
+        question: "Who played the role of Tony Stark in the Marvel Cinematic Universe?",
+        options: ["Chris Evans", "Robert Downey Jr.", "Mark Ruffalo", "Tom Hiddleston"],
+        answer: "Robert Downey Jr."
+      },
+      {
+        question: "What is the name of the fictional kingdom in the movie 'Black Panther'?",
+        options: ["Wakanda", "Asgard", "Atlantis", "Zamunda"],
+        answer: "Wakanda"
+      },
+      {
+        question: "In which TV series does the character Walter White appear?",
+        options: ["Breaking Bad", "The Sopranos", "Stranger Things", "The Wire"],
+        answer: "Breaking Bad"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionElement = document.getElementById('question');
+    const optionsElement = document.getElementById('options');
+    const resultElement = document.getElementById('result');
+    const nextBtn = document.getElementById('next-btn');
+
+    function loadQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+      optionsElement.innerHTML = '';
+      resultElement.textContent = '';
+      resultElement.className = 'result';
+
+      currentQuestion.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.addEventListener('click', () => selectAnswer(option, currentQuestion.answer));
+        optionsElement.appendChild(button);
+      });
+
+      nextBtn.disabled = true;
+    }
+
+    function selectAnswer(selectedOption, correctAnswer) {
+      if (selectedOption === correctAnswer) {
+        resultElement.textContent = 'Correct!';
+        resultElement.className = 'result correct';
+        score++;
+      } else {
+        resultElement.textContent = `Wrong! The correct answer is "${correctAnswer}".`;
+        resultElement.className = 'result wrong';
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showFinalScore();
+      }
+    });
+
+    function showFinalScore() {
+      questionElement.textContent = 'Quiz Completed!';
+      optionsElement.innerHTML = '';
+      resultElement.textContent = `You scored ${score} out of ${questions.length}.`;
+      resultElement.className = 'result';
+      nextBtn.style.display = 'none';
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

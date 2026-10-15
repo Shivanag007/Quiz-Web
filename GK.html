@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Quiz</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  header {
+    background: linear-gradient(to right, orange,Yellow,green);
+    color:black;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  main {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(218, 64, 64, 0.1);
+  }
+  
+  #question-box {
+    margin-bottom: 20px;
+  }
+  
+  #options {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #options li {
+    background: #e0e0e0;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  #options li:hover {
+    background:linear-gradient(to right,blue,yellow);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  button {
+    background: red;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: #feb47b;
+  }
+  
+  footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><b>India Open Quiz</b></h1>
+      <p><b><big>Test Your General Knowledge</big></b></p>
+    </header>
+
+    <main>
+      <div id="quiz-container">
+        <div id="question-box">
+          <h2 id="question">Question goes here...</h2>
+          <ul id="options"></ul>
+        </div>
+        <button id="next-btn">Next</button>
+      </div>
+      <div id="result-container" class="hidden">
+        <h2>Your Score: <span id="score">0</span>/50</h2>
+        <button id="restart-btn">Restart Quiz</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 India Open Quiz</p>
+    </footer>
+  </div>
+  <script>
+    const questions = [
+  {
+    question: "1.Who The Dronacharya Award is Given To?",
+    options: ["Sports Coach", "Criket Coach", "Football Coach", "Tenis Coach"],
+    answer: "Sports Coach"
+  }, 
+{
+    question: "2.In Which State The Ajanta caves are located?",
+    options: ["Kerla", "Goa", "Karnataka", "Maharastra"],
+    answer: "Maharastra"
+},
+{
+  question: "3.Which Sstate Has The Largest Coastal Area in India?",
+  options: ["Gujarat", "kerla", "Maharastra", "Tamil nadu"],
+  answer: "Gujarat"
+},
+{
+  question: "4.Name a Plant Which Cannot Make it Own Food?",
+  options: ["Tomato", "Mushroom", "Pea", "Carrot"],
+  answer: "Mushroom"
+},
+{
+  question: "5.In Which Year Indian Constitution Was Amended For The First Time?",
+  options: ["1945", "1998", "1951", "1956"],
+  answer: "1951"
+},
+{
+  question: "6.What is The Chemical Name of Common Salt?",
+  options: ["Sodium Chloride", "sodium oxide", "sodium", "calcium"],
+  answer: "Sodium chloride"
+},
+{
+  question: "7.Which is The Hottest Planet in The Solar System?",
+  options: ["Earth", "Jupiter", "Venus", "Mars"],
+  answer: "Venus"
+},
+{
+  question: "8.Which is The Place in India The Electricity Was Supplied?",
+  options: ["Nasik", "Kolkatta", "Mumbai", "Bangalore"],
+  answer: "Kolkatta"
+},
+{
+  question: "9.Which Two Month In a Year Have The Same Calender?",
+  options: ["April,July", "May,June", "Augest,july", "June,July"],
+  answer: "April,July"
+},
+{
+  question: "10.Which Is The Largest and Oldest Bank in Existence in India?",
+  options: ["Canara Bank", "Central Bank", "Maharastra Bank", "SBI"],
+  answer: "SBI"
+},
+{
+  question: "11.where is The Coin Museum Located in India?",
+  options: ["Delh", "Nasik,Maharashtra", "Karnataka,Bangalore", "Tamil nadu,Channei"],
+  answer: "Nasik Maharashtra"
+},
+{
+  question: "12.Which Country Has Become The World's First Country To Enfroce Equal Pay For Women and Men?",
+  options: ["Iceland", "Nagaland", "Greenland", "Forestland"],
+  answer: "Iceland"
+},
+{
+  question: "13.How Many Railway Stations are Equipped with Wi-Fi Facilities by Indian Railways?",
+  options: ["10.500", "4.600", "8.500", "9000"],
+  answer: "8.500"
+},
+{
+  question: "14.Which Country HAs Built The World's Biggest Air Purifier?",
+  options: ["Africa", "America", "India", "China"],
+  answer: "China"
+},
+{
+  question: "15.First Bank To Introduce Credit Card in India?",
+  options: ["SBI", "Central Bank", "Canara Bank", "ICIC Bank"],
+  answer: "Central Bank"
+},
+{
+  question: "16.Which State Government Introduced Bhoodhar Card For Land holders?",
+  options: ["Karnataka", "delh", "Uttar pradesh", "Andra Pradesh"],
+  answer: "Andra Pradesh"
+},
+{
+  question: "17.Where Was India's First Computer Installed?",
+  options: ["Maharastra", "Gujarat", "Kolkatta", "Calcutta"],
+  answer: "Calcutta"
+},
+{
+  question: "18.Which Was The First Country To Implement Goods and Service Tax(GST)?",
+  options: ["France", "England", "America", "Pakistan"],
+  answer: "France"
+},
+{
+  question: "19.When is The Earth Day Celebrated On?",
+  options: ["April 22", "December 22", "MAy 22", " June 22"],
+  answer: "April 22"
+},
+{
+  question: "20.How Many Bones are There In a Human Skull?",
+  options: ["23", "22", "65", "88"],
+  answer: "22"
+},
+{
+  question: "21.In Which Country White Elephants are Mostly Found?",
+  options: ["india", "China", "Thailand", "England"],
+  answer: "Thailand"
+},
+{
+  question: "22.The Sports of Jallikattu is Typically Practiced in Which State?",
+  options: ["Tamil Nadu", "Kerla", "Karnataka", "Goa"],
+  answer: "Tamil Nadu"
+},
+{
+  question: "23.Which Planet is Called Evening Star?",
+  options: ["Venus", "Mars", "Earth", "Moon"],
+  answer: "Venus"
+},
+{
+  question: "24.Which Planet is Know As Red Planet?",
+  options: ["Earth", "Mars", "Venus", "Moon"],
+  answer: "Mars"
+},
+{
+  question: "25.In Which Language Did Buddha Preach?",
+  options: ["kannada", "Hindi", "Bengali", "Pali"],
+  answer: "Pali"
+},
+{
+  question: "26.What is The Purest Form of Carbon?",
+  options: ["Copper", "Gold", "Diamond", "Iron"],
+  answer: "Diamond"
+},
+{
+  question: "27.Which State Leads In Agricultural Production?",
+  options: ["Gujarat", "Andra Pradesh", "Madhya Pradesh", "Uttar Pradesh"],
+  answer: "Uttar pradesh"
+},
+{
+  question: "28.Diamond Mines in India are Found In Which Place?",
+  options: ["Uttar Pradesh", "Gujarat", "Madhya Pradesh", "Andra Pradesh"],
+  answer: "Madhya Pradesh"
+},
+{
+  question: "29.Name any One Country Which Has No Income Tax?",
+  options: ["Russia", "India", "China", "Kuwait"],
+  answer: "Kuwait"
+},
+{
+  question: "30.The Largest gland In The Human Body Is?",
+  options: ["Lungs", "Liver", "Heart", "Brain"],
+  answer: "Liver"
+},
+{
+  question: "31.January 15 Is Celebrated As The?",
+  options: ["Army Day", "Back Day", "Aids Day", "Friends Day"],
+  answer: "Army Day"
+},
+{
+  question: "32.Name The First Indian who Took 200 Wickets In One-Day Cricket?",
+  options: ["ABD", "Virat", "MS Doni", "Kapil Dev"],
+  answer: "Kapil Dev"
+},
+{
+  question: "33.Which State Has The Highest litracy Rate Amony Women in India?",
+  options: ["Goa", "Kerala", "Karnataka", "Tamil Nadu"],
+  answer: "Kerala"
+},
+{
+  question: "34.Which of The Indian Bank Has The Maximum Branches In Foregin Countries?",
+  options: ["Central Bank", "Maharastra Bank", "SBI", "Canara Bank"],
+  answer: "SBI"
+},
+{
+  question: "35.The Largest Organ in The Human Body?",
+  options: ["Liver", "Skin", "Heat", "Lungs"],
+  answer: "Skin"
+},
+{
+  question: "36.Which is The Only Bird That Can Fly BackWards?",
+  options: ["peakcook", "Egale", "Paroot", "Humming Bird"],
+  answer: "Humming Bird"
+},
+{
+  question: "37.How Many Bones are In Giraffe's Neck ?",
+  options: ["7", "9", "15", "8"],
+  answer: "7"
+},
+{
+  question: "38.IN Which Month Earth Closed To The Sun ?",
+  options: ["June", "April", "March", "January"],
+  answer: "January"
+},
+{
+  question: "39.Which Is Rareest Blood Type in Human?",
+  options: ["O+", "AB+", "AB-", "B-"],
+  answer: "AB-"
+},
+{
+  question: "40.VAT Was First Introduced In Which Country?",
+  options: ["China", "Frence", "Italy", "Spain"],
+  answer: "France"
+},
+{
+  question: "41.Name The World's Largest Biometric System?",
+  options: ["ATM", "Pan", "Visa", "Aadhar"],
+  answer: "Aadhar"
+},
+{
+  question: "42.How Many Planets In Our Solar System Have Moon?",
+  options: ["5", "2", "9", "6"],
+  answer: "6"
+},
+{
+  question: "43.Which State is Going To Set Up Butterfly Conservatory Park?",
+  options: ["Gujarat", "Harayan", "Delhi", "Karnataka"],
+  answer: "Harayan"
+},
+{
+  question: "44.IFSC Code Contains  How MAny Characters?",
+  options: ["12", "10", "15", "11"],
+  answer: "11"
+},
+{
+  question: "45.JAI HIND Slogan Was Given By?",
+  options: ["Raja Ram Mohan Roy", "Swami Viveknandha", "Bhagat Singh", "Subhash Chandra Bose"],
+  answer: "Subhas Chandra Bose"
+},
+{
+  question: "46.Which Day is Celebrated As AIDS Day?",
+  options: ["Jan 1", "Nov 1", "May 1", "Dec  1"],
+  answer: "Dec 1"
+},
+{
+  question: "47.Which Country Started First Plastic Notes?",
+  options: ["China", "Africa", "England", "Australia"],
+  answer: "Australia"
+},
+{
+  question: "48.Name a Company Which Was Named After a River?",
+  options: ["Samsung", "Nokia", "Lava", "Realme"],
+  answer: "Nokia"
+},
+{
+  question: "49.Which Is The Fastest Healing Part OF Our Body?",
+  options: ["Ear", "Tongue", "Nose", "Skin"],
+  answer: "Tongue"
+},
+{
+  question: "50.In Which Part Of Our Body Have The Smallest Bone ?",
+  options: ["Ears", "Nose", "Eyes", "Mouth"],
+  answer: "Ears"
+},
+]
+
+  let currentQuestionIndex = 0;
+  let score = 0;
+  
+  const questionElement = document.getElementById("question");
+  const optionsElement = document.getElementById("options");
+  const nextButton = document.getElementById("next-btn");
+  const resultContainer = document.getElementById("result-container");
+  const scoreElement = document.getElementById("score");
+  const restartButton = document.getElementById("restart-btn");
+  
+  function loadQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+  
+    currentQuestion.options.forEach(option => {
+      const li = document.createElement("li");
+      li.textContent = option;
+      li.addEventListener("click", () => selectAnswer(li, currentQuestion.answer));
+      optionsElement.appendChild(li);
+    });
+  }
+  
+  function selectAnswer(selectedOption, correctAnswer) {
+    if (selectedOption.textContent === correctAnswer) {
+      selectedOption.style.backgroundColor = "#a8d5b3";
+      score++;
+    } else {
+      selectedOption.style.backgroundColor = "#f8b2b2";
+    }
+  
+    Array.from(optionsElement.children).forEach(option => {
+      option.style.pointerEvents = "none";
+    });
+  
+    nextButton.style.display = "block";
+  }
+  
+  nextButton.addEventListener("click", () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      loadQuestion();
+      nextButton.style.display = "none";
+    } else {
+      showResult();
+    }
+  });
+  
+  function showResult() {
+    document.getElementById("quiz-container").classList.add("hidden");
+    resultContainer.classList.remove("hidden");
+    scoreElement.textContent = score;
+  }
+  
+  restartButton.addEventListener("click", () => {
+    currentQuestionIndex = 0;
+    score = 0;
+    resultContainer.classList.add("hidden");
+    document.getElementById("quiz-container").classList.remove("hidden");
+    loadQuestion();
+  });
+  
+  loadQuestion();
+  </script>
+</body>
+</html>
